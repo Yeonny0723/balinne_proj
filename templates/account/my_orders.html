@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load i18n %} 
+{% block content %}
+<section class="section-content padding-y bg">
+    <div class="container">
+        <h1 class="w-100 text-center">My Page</h1>
+        <hr class="solid" style="width:20%; max-width:50px;">
+        <div class="row">
+        {% include 'includes/dashboard_sidebar.html' %}
+        <main class="col-md-9">
+            <article class="card">
+            <header class="card-header">
+                <h2 class="d-inline-block mr-3">{% trans "전체 주문 내역" %}</h2>
+            </header>
+            <div class="card-body p-0">
+              
+                <div class="row"> 
+                <div class="col-md-12">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col-3"><span><strong>{% trans "주문번호" %}</strong></span></th>
+                        <th scope="col-3"><span><strong>{% trans "주문자" %}</strong></span></th>
+                        <th scope="col-3"><span><strong>{% trans "주문일자" %}</strong></span></th>
+                        <th scope="col-3"><span><strong>{% trans "송장번호" %}</strong></span></th>
+                        <th scope="col-3"><span><strong>{% trans "상태" %}</strong></span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for order in orders %}
+                      <tr>
+                        <th scope="row"><a href="{% url 'order_detail' order.order_number %}"><span>{{ order.order_number }}</span></a></th>
+                        <td><span>{{ order.recipient }}</span></td>
+                        <td><span>{{ order.created_at.date }}</span></td>
+                        {% if order.tracking_number %}
+                        <td><span>{{ order.tracking_number }}</span></td>
+                        {% else %}
+                        <td><span>-</span></td>
+                        {% endif %}
+                        <td><span>{{ order.order_status }}</span></td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+             </div> <!-- row -->
+            </div> <!-- card-body .// -->
+            </article> <!-- order-group.// --> 
+        </main>
+    </div> <!-- row.// -->
+    </div>
+</section>
+    
+{% endblock %}

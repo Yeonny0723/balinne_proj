@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% block content %}
+
+
+<div class="container" style="margin-top: 50px;">
+    <center><i class="fas fa-check-circle" style="font-size: 72px;margin-bottom: 20px;color: #28A745;"></i></center>
+    <h2 class="text-center">{% trans '결제가 완료되었습니다' %}</h2>
+	<br>
+	<div class="text-center">
+		<a href="{% url 'dashboard' %}" class="btn btn-sm btn-info">{% trans '주문내역 확인하기' %}</a>
+		<a href="{% url 'shop' %}" class="btn btn-sm btn-success">{% trans '이어서 쇼핑하기' %}</a>
+	</div>
+</div>
+
+<div class="container" style="margin: 0 auto;width: 80%; max-width:600px;padding: 50px;background: #f1f1f1;margin-top: 50px;margin-bottom: 50px;">
+    <div class="row invoice row-printable">
+        <div class="col-md-12">
+            <!-- col-lg-12 start here -->
+            <div class="panel panel-default plain" id="dash_0">
+                <!-- Start .panel -->
+                <div class="panel-body p30">
+                    <div class="row">
+                        <!-- Start .row -->
+                        <div class="col-12 d-flex justify-content-between align-items-center mb-2">
+                            <!-- col-lg-6 start here -->
+                            <div class="invoice-logo"><img src="{% static 'images/logo.png' %}" alt="Invoice logo" style="max-height: 40px;"></div>
+                            <h2><strong>{% trans '결제 영수증' %}</strong></h2><!-- Invoiced To -->
+                        </div>
+                        <!-- col-lg-6 end here -->
+                        <div class="col-12">
+                            <!-- col-lg-6 start here -->
+                            <div class="invoice-from">
+                                <ul class="list-unstyled text-right">
+                                    <li>{{ order.recipient }}</li>
+                                    <li>{{ order.full_address }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <br>
+                        <!-- col-lg-6 end here -->
+                        <div class="col-lg-12">
+                            <!-- col-lg-12 start here -->
+                            <div class="invoice-details mt25">
+                                <div class="well">
+                                    <ul class="list-unstyled mb0">
+                                        <li><strong>{% trans '주문번호' %}</strong> {{ order_number }}</li>
+                                        <li><strong>{% trans '결제번호' %}</strong> {{ transID }}</li>
+                                        <li><strong>{% trans '주문일자' %}:</strong> {{ order.created_at.date }}</li>
+                                        <li><strong>{% trans '주문시간' %}:</strong> {{ order.created_at.time }}</li>
+                                        <!-- <li><strong>{% trans '상태' %}:</strong> {{ status }}</li> -->
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="invoice-items">
+                                <div class="table-responsive" style="outline: none;" tabindex="0">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="per75 text-center"><span><strong>Products</strong></span></th>
+                                                <th class="per5 text-center"></th>
+                                                <th class="per25 text-center"><span><strong>Total</strong></span></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in ordered_products %}
+                                            <tr>
+                                                <td>
+                                                    <span>{{ item.product.product_name }}</span>
+                                                </td>
+                                                <td class="text-center"><span>{{ item.quantity }}</span></td>
+                                                <td class="text-center"><span>{{CURRENT_CURRENCY}} {{ item.product_price }}</span></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th colspan="2" class="text-right"><span>Sub Total:</span> </th>
+                                                <th class="text-center"><span>{{CURRENT_CURRENCY}} {{ subtotal }}</span></th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="2" class="text-right"><span>Tax:</span></th>
+                                                <th class="text-center"><span>{{CURRENT_CURRENCY}} {{ order.tax }}</span></th>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <th colspan="2" class="text-right"><span>Grand Total:</span></th>
+                                                <th class="text-center"><span><strong>{{CURRENT_CURRENCY}} {{ order.order_total }}</strong></span></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="invoice-footer mt25">
+                                <p class="text-center">Thank you for shopping with us!</p>
+                            </div>
+                        </div>
+                        <!-- col-lg-12 end here -->
+                    </div>
+                    <!-- End .row -->
+                </div>
+            </div>
+            <!-- End .panel -->
+        </div>
+        <!-- col-lg-12 end here -->
+    </div>
+    </div>
+
+
+{% endblock %}

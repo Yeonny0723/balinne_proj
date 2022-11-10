@@ -1,0 +1,11 @@
+{% load i18n %} 
+<aside class="col-md-3">
+    <!--   SIDEBAR   -->
+    <ul class="list-group mb-4">
+        <a class="list-group-item {% if '/dashboard/' == request.path %} active {% endif %}" href="{% url 'dashboard' %}"><h3>{% trans "대시보드" %}</h3></a>
+        <a class="list-group-item {% if '/my_orders/' in request.path or '/order_detail/' in request.path %} active {% endif %}" href="{% url 'my_orders' %}"><h3>{% trans "주문내역" %}</h3></a>
+        <a class="list-group-item {% if '/edit_profile/' in request.path %} active {% endif %}" href="{% url 'edit_profile' %}"><h3>{% trans "프로필 수정하기" %}</h3></a>
+        <a class="list-group-item{% if '/order_refund/' in request.path %} active {% endif %}" href="{% url 'order_refund' %}"><h3>{% trans "환불·교환" %}</h3></a>
+    </ul>
+    <!--   SIDEBAR .//END   -->
+</aside>

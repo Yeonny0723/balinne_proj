@@ -1,0 +1,41 @@
+{% load i18n %}  
+<footer style="background-color:#2F2C2C;" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="row w-100 d-flex justify-content-between" style="padding:10vw;">
+        <div class="footer-context mb-5 col-12 col-lg-5">
+            <h3>BALINNE 발린느</h3> 
+            <div class="footer-contacts">
+                <p>
+                    <br>
+                    유한회사 발린느 <br>
+                    대표: 김우형<br>
+                    개인정보책임관리자: 김주연<br>
+                    사업자번호: 640-16-01206<br>
+                    주소: 경기도 용인시 처인구 모현읍 초하로 52-5<br>
+                    전화번호: 0507-1311-2348<br>
+                    이메일 info@balinne.com<br>
+                </p>
+            </div>
+        </div>
+        <div class="footer-nav mb-3 col-8 col-lg-5">
+            <h3>NAVIGATION</h3> 
+            <div class="footer-links mb-3">
+                <a href="{% url 'aboutUs' %}"><span>{% trans "Présentation" %}</span></a><br>
+                <a href="{% url 'shop' %}"><span>{% trans "Boutique" %}</span> </a> <br>
+                <a href="{% url 'news' %}"><span>{% trans "News" %}</span> </a> <br>
+                <a href="{% url 'category_view' %}"><span>{% trans "La collection" %} </span></a> <br>
+                <a href="{% url 'visit' %}"><span>{% trans "Visit" %} </span></a> <br>
+                <a href="{% url 'dashboard' %}"><span>{% trans "My page" %} </span></a> <br>
+                <a href="{% url 'newArrival' %}?page=1"><span>{% trans "Nouveau arrivé" %}</span></a> <br>
+                <a href="{% url 'contact' %}"><span>{% trans "Contact" %}</span></a> <br>
+            </div>
+        </div>
+        <div class="footer-legal col-4 col-lg-2">
+            <h3>LEGAL</h3> 
+            <div class="footer-links mb-3">
+                <a href="{% url 'termsNConditions' %}"><span>이용약관 </span></a>  <br>
+                <a href="{% url 'privacyPolicy' %}"><span>개인정보취급방침 </span></a> <br>
+                <a href="{% url 'refundPolicy' %}"><span>취소 및 환불 정책</span></a> <br>
+            </div>
+        </div>
+    </div>
+</footer>

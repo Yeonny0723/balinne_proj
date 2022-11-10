@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content%}
+<div class="d-flex justify-content-center align-items-center">
+    <div class="container text-dark w-100 d-flex align-items-center flex-column m-5 p-5" style="background-color: #F9FAFB;">
+    <h1>{% trans "Verify Your E-mail Address" %}</h1>
+
+    <span>{% blocktrans %} {% endblocktrans %} {% trans '계정 인증을 위한 이메일을 전송했습니다. 링크를 따라 계정생성 프로세스를 완료해주세요. 이메일이 보이지 않는다면 스팸폴더를 확인해보시고, 몇 분 내로 확인 이메일이 전송되지 않는다면 고객센터로 문의해주세요.' %}    </span>
+    <!-- We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. If you do not see the verification e-mail in your main inbox, check your spam folder. Please contact us if you do not receive the verification e-mail within a few minutes. -->
+</div>
+</div>
+{% endblock %}

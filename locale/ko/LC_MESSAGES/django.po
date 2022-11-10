@@ -1,0 +1,462 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-17 06:41+1000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: templates/account/dashboard.html:35
+msgid "로그아웃"
+msgstr ""
+
+#: templates/account/edit_profile.html:12
+#: templates/includes/dashboard_sidebar.html:7
+msgid "프로필 수정하기"
+msgstr ""
+
+#: templates/account/edit_profile.html:21
+msgid "유저네임"
+msgstr ""
+
+#: templates/account/edit_profile.html:25 templates/cart/checkout.html:26
+msgid "이메일"
+msgstr ""
+
+#: templates/account/edit_profile.html:41 templates/cart/checkout.html:47
+msgid "우편번호"
+msgstr ""
+
+#: templates/account/edit_profile.html:43 templates/cart/checkout.html:49
+msgid "추가주소"
+msgstr ""
+
+#: templates/account/edit_profile.html:47 templates/cart/checkout.html:53
+msgid "도로명주소"
+msgstr ""
+
+#: templates/account/edit_profile.html:49 templates/cart/checkout.html:55
+msgid "상세주소"
+msgstr ""
+
+#: templates/account/edit_profile.html:58
+msgid "계정삭제"
+msgstr ""
+
+#: templates/account/edit_profile.html:61
+msgid "저장하기"
+msgstr ""
+
+#: templates/account/edit_profile.html:88
+msgid "정말로 계정을 삭제하시겠습니까?"
+msgstr ""
+
+#: templates/account/edit_profile.html:101
+msgid "계정삭제는 영구적으로 삭제 이전의 상태로 복구가 불가합니다. "
+msgstr ""
+
+#: templates/account/edit_profile.html:102
+msgid "계정삭제 후 관련 모든 데이터는 삭제될 것이며"
+msgstr ""
+
+#: templates/account/edit_profile.html:103
+msgid "누구도"
+msgstr ""
+
+#: templates/account/edit_profile.html:103
+msgid "복구할 수 없습니다."
+msgstr ""
+
+#: templates/account/edit_profile.html:118
+msgid "상기사항을 인지하였습니다."
+msgstr ""
+
+#: templates/account/edit_profile.html:125
+msgid "아니요"
+msgstr ""
+
+#: templates/account/edit_profile.html:132
+msgid "네"
+msgstr ""
+
+#: templates/account/email_confirm.html:8
+msgid "Confirm E-mail Address"
+msgstr ""
+
+#: templates/account/email_confirm.html:13
+#, python-format
+msgid ""
+"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
+"address for user %(user_display)s."
+msgstr ""
+
+#: templates/account/email_confirm.html:17
+msgid "Confirm"
+msgstr ""
+
+#: templates/account/email_confirm.html:24
+#, python-format
+msgid ""
+"This e-mail confirmation link expired or is invalid. Please <a href="
+"\"%(email_url)s\" class=\"btn btn-primary btn-block\">issue a new e-mail "
+"confirmation request</a>."
+msgstr ""
+
+#: templates/account/my_orders.html:11
+msgid "전체 주문 내역"
+msgstr ""
+
+#: templates/account/my_orders.html:19 templates/order/order_complete.html:47
+msgid "주문번호"
+msgstr ""
+
+#: templates/account/my_orders.html:20
+msgid "주문자"
+msgstr ""
+
+#: templates/account/my_orders.html:21 templates/order/order_complete.html:49
+msgid "주문일자"
+msgstr ""
+
+#: templates/account/my_orders.html:22
+msgid "송장번호"
+msgstr ""
+
+#: templates/account/verification_sent.html:6
+msgid "Verify Your E-mail Address"
+msgstr ""
+
+#: templates/account/verification_sent.html:8
+msgid " "
+msgstr ""
+
+#: templates/account/verification_sent.html:8
+msgid ""
+"계정 인증을 위한 이메일을 전송했습니다. 링크를 따라 계정생성 프로세스를 완료"
+"해주세요. 이메일이 보이지 않는다면 스팸폴더를 확인해보시고, 몇 분 내로 확인 "
+"이메일이 전송되지 않는다면 고객센터로 문의해주세요."
+msgstr ""
+
+#: templates/cart/cart.html:10
+msgid "쇼핑카트에 아직 제품이 없습니다!"
+msgstr ""
+
+#: templates/cart/cart.html:12 templates/cart/cart.html:134
+#: templates/cart/checkout.html:140 templates/order/order_complete.html:12
+#: templates/shop/likes.html:12
+msgid "이어서 쇼핑하기"
+msgstr ""
+
+#: templates/cart/cart.html:23 templates/cart/cart.html:64
+#: templates/cart/checkout.html:79 templates/cart/checkout.html:104
+#: templates/order/payments.html:58 templates/order/payments.html:83
+msgid "상품"
+msgstr ""
+
+#: templates/cart/cart.html:39 templates/cart/checkout.html:91
+#: templates/order/payments.html:70
+msgid "개"
+msgstr ""
+
+#: templates/cart/cart.html:48 templates/cart/cart.html:103
+#: templates/cart/checkout.html:93 templates/cart/checkout.html:126
+#: templates/order/payments.html:72 templates/order/payments.html:105
+msgid "/1개"
+msgstr ""
+
+#: templates/cart/cart.html:65 templates/cart/checkout.html:105
+#: templates/order/payments.html:84
+msgid "수량"
+msgstr ""
+
+#: templates/cart/cart.html:66 templates/cart/checkout.html:106
+#: templates/order/payments.html:85
+msgid "가격"
+msgstr ""
+
+#: templates/cart/cart.html:121
+msgid "총 제품 가격"
+msgstr ""
+
+#: templates/cart/cart.html:125 templates/order/payments.html:126
+msgid "세금"
+msgstr ""
+
+#: templates/cart/cart.html:129 templates/order/payments.html:130
+msgid "총 가격"
+msgstr ""
+
+#: templates/cart/cart.html:133 templates/cart/checkout.html:134
+#: templates/cart/checkout.html:135 templates/cart/checkout.html:136
+#: templates/cart/checkout.html:138
+msgid "주문하기"
+msgstr ""
+
+#: templates/cart/checkout.html:12
+msgid "배송지 주소"
+msgstr ""
+
+#: templates/cart/checkout.html:17
+msgid "저장된 주소 불러오기"
+msgstr ""
+
+#: templates/cart/checkout.html:22
+msgid "수령인"
+msgstr ""
+
+#: templates/cart/checkout.html:26 templates/cart/checkout.html:36
+msgid "선택"
+msgstr ""
+
+#: templates/cart/checkout.html:32
+msgid "연락처 1"
+msgstr ""
+
+#: templates/cart/checkout.html:36
+msgid "연락처 2"
+msgstr ""
+
+#: templates/cart/checkout.html:42
+msgid "배송지 찾기"
+msgstr ""
+
+#: templates/cart/checkout.html:60
+msgid "베송메모"
+msgstr ""
+
+#: templates/cart/checkout.html:63
+msgid "배송 전에 미리 연락바랍니다."
+msgstr ""
+
+#: templates/cart/checkout.html:64
+msgid "부재시 경비실에 맡겨주세요."
+msgstr ""
+
+#: templates/cart/checkout.html:65
+msgid "부재시 전화 주시거나 문자 남겨주세요."
+msgstr ""
+
+#: templates/cart/checkout.html:148 templates/cart/checkout.html:170
+msgid "배송주소"
+msgstr ""
+
+#: templates/cart/checkout.html:154
+msgid "다음 더 빠른 주문을 위해 배송 정보를 저장할까요?"
+msgstr ""
+
+#: templates/cart/checkout.html:155 templates/cart/checkout.html:177
+msgid " (안전한 공간에 보관됩니다!)"
+msgstr ""
+
+#: templates/cart/checkout.html:158 templates/cart/checkout.html:159
+#: templates/cart/checkout.html:180 templates/cart/checkout.html:181
+msgid "괜찮아요!"
+msgstr ""
+
+#: templates/cart/checkout.html:160 templates/cart/checkout.html:182
+msgid "좋아요!"
+msgstr ""
+
+#: templates/cart/checkout.html:176
+msgid "수정된 배송 정보를 저장할까요?"
+msgstr ""
+
+#: templates/errorHandler/error_page.html:10
+msgid "찾으시려는 페이지는 이동, 삭제되었거나 존재하지 않는 페이지입니다."
+msgstr ""
+
+#: templates/errorHandler/error_page.html:13
+msgid "상단의 메뉴를 클릭하여 찾아보시거나, 홈페이지로 돌아가실 수 있습니다"
+msgstr ""
+
+#: templates/errorHandler/error_page.html:16
+msgid ""
+"만에 하나 같은 문제가 반복된다면, 웹사이트 관리자에게 연락해주시기 바랍니다."
+msgstr ""
+
+#: templates/errorHandler/error_page.html:23
+#: templates/socialaccount/signup.html:25
+msgid "제출하기"
+msgstr ""
+
+#: templates/errorHandler/error_page.html:28
+msgid "홈페이지로 돌아가기"
+msgstr ""
+
+#: templates/includes/dashboard_sidebar.html:5
+msgid "대시보드"
+msgstr ""
+
+#: templates/includes/dashboard_sidebar.html:6
+msgid "주문내역"
+msgstr ""
+
+#: templates/includes/dashboard_sidebar.html:8
+msgid "환불·교환"
+msgstr ""
+
+#: templates/includes/navbar.html:47
+msgid "Présentation"
+msgstr "발린느"
+
+#: templates/includes/navbar.html:48
+msgid "Boutique"
+msgstr "쇼핑"
+
+#: templates/includes/navbar.html:49
+msgid "News"
+msgstr ""
+
+#: templates/includes/navbar.html:50
+msgid "La collection"
+msgstr "컬렉션"
+
+#: templates/includes/navbar.html:51
+msgid "Visit"
+msgstr ""
+
+#: templates/includes/navbar.html:52
+msgid "My page"
+msgstr ""
+
+#: templates/includes/navbar.html:55 templates/includes/navbar.html:57
+msgid "Nouveau arrivé"
+msgstr "신제품"
+
+#: templates/includes/navbar.html:62
+msgid "Contact"
+msgstr "연락"
+
+#: templates/includes/navbar.html:82
+msgid "LOGIN"
+msgstr "로그인"
+
+#: templates/main/home.html:96
+msgid "빌린느 컬렉션을 만나보세요."
+msgstr ""
+
+#: templates/main/home.html:150
+msgid "이메일을 입력해주세요"
+msgstr ""
+
+#: templates/main/home.html:153
+msgid "성함을 입력해주세요"
+msgstr ""
+
+#: templates/main/home.html:170
+msgid "문의사항을 공유해주세요!"
+msgstr ""
+
+#: templates/main/home.html:173
+msgid "문의하기"
+msgstr ""
+
+#: templates/main/newArrival.html:24
+msgid "구매"
+msgstr ""
+
+#: templates/main/newArrival.html:29
+msgid "더 많은 이야기 둘러보기"
+msgstr ""
+
+#: templates/main/newArrival.html:32 templates/main/newArrival.html:34
+msgid "이전"
+msgstr ""
+
+#: templates/main/newArrival.html:45 templates/main/newArrival.html:47
+msgid "다음"
+msgstr ""
+
+#: templates/order/order_complete.html:9
+msgid "결제가 완료되었습니다"
+msgstr ""
+
+#: templates/order/order_complete.html:28
+msgid "결제 영수증"
+msgstr ""
+
+#: templates/order/order_complete.html:48
+msgid "결제번호"
+msgstr ""
+
+#: templates/order/order_complete.html:50
+msgid "주문시간"
+msgstr ""
+
+#: templates/order/order_complete.html:51
+msgid "상태"
+msgstr ""
+
+#: templates/order/payments.html:7
+msgid "주문 내역 재확인 및 결제"
+msgstr ""
+
+#: templates/order/payments.html:13
+msgid "배송지주소"
+msgstr ""
+
+#: templates/order/payments.html:21
+msgid "요청사항"
+msgstr ""
+
+#: templates/order/payments.html:29
+msgid "결제방법"
+msgstr ""
+
+#: templates/order/payments.html:50
+msgid "주문확인"
+msgstr ""
+
+#: templates/order/payments.html:122
+msgid "상품 가격"
+msgstr ""
+
+#: templates/order/payments.html:134
+msgid "결제하기"
+msgstr ""
+
+#: templates/shop/likes.html:10
+msgid "아직 좋아요를 누른 제품이 없습니다!"
+msgstr ""
+
+#: templates/shop/product_detail.html:16
+msgid "갤러리"
+msgstr ""
+
+#: templates/shop/product_detail.html:17
+msgid "상품상세"
+msgstr ""
+
+#: templates/shop/product_detail.html:18
+msgid "구매하기"
+msgstr ""
+
+#: templates/shop/product_detail.html:107
+msgid "재고소진"
+msgstr ""
+
+#: templates/shop/product_detail.html:109
+msgid "장바구니에 담기"
+msgstr ""
+
+#: templates/socialaccount/signup.html:6
+#, python-format
+msgid ""
+"%(provider_name)s 간편로그인을 계속해서 이용하기 위해 다음 폼을 제출해주세"
+"요! :)"
+msgstr ""
+
+#~ msgid "JOIN"
+#~ msgstr "회원가입"

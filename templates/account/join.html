@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% load socialaccount %}
+
+
+<section id="social_login_section" class="vh-100">
+  <div class="container py-5 h-100">
+    {% if 'next' in request.GET %}
+    <div id="message" class="container">
+        <div class="alert alert-success" role='alert'> 
+            <button type='button' class='close' data-dismiss='alert' aria-label='Close'> 
+                <span aria-hidden='true'>&times;</span>
+            </button>
+            <span class="font-weight-bold">서비스 이용을 위해 회원가입해주세요 :)</span>
+        </div>
+    </div>
+    {% endif %}
+    <div class="row d-flex align-items-center justify-content-center">
+      <div class="col-md-8 col-lg-10 col-xl-6 offset-xl-1">
+        <div class="d-flex w-100">
+          <h2 onclick="javascript:window.history.back(-1);return false;"><i class="fas fa-chevron-left"></i></h2>
+          <h1 class="text-center w-100">회원가입·간편회원가입</h1>
+        </div>
+        <h2 class="py-5">발린느에 오신 것을 환영합니다.</h2>
+        <h4 class="py-2" style="text-align:center;">이미 계정이 있으신가요? <a href="{% url 'account_join' %}" style="color:#3b5998"><u>로그인</u></a></h4>
+        <div>
+          {% load i18n %}
+          <!-- kakao login -->
+          <form method="post" class="social_login_submit form-signin mb-2" action="{% provider_login_url 'kakao' %}">
+            {% csrf_token %}
+            <button type="submit" class="social_btn btn btn-lg btn-block font-weight-bold d-flex justify-content-center" style="background-color: #FEE501; color:#3C1D1E;">
+              <img src="{% static 'images/misc/kakao_logo.png' %}" alt="kakao logo" style="height:1.2rem;" class="mr-1">
+              <h6 class="texn-center w-100 m-0">카카오로 계속하기</h6>
+            </button>
+          </form>
+          <!-- naver login -->
+          <form method="post" class="social_login_submit form-signin mb-2" action="{% provider_login_url 'naver' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-lg btn-block text-white font-weight-bold d-flex justify-content-center" style="background-color: #1EBC01">
+              <img src="{% static 'images/misc/naver_logo.png' %}" alt="naver logo" style="height:1.0rem" class="mr-1">
+              <h6 class="texn-center w-100 m-0">네이버로 계속하기</h6>
+            </button>
+          </form>
+          <!-- facebook login -->
+          <form method="post" class="social_login_submit form-signin mb-2" action="{% provider_login_url 'facebook' %}">
+            {% csrf_token %}
+            <button type="submit" class="social_btn btn btn-lg btn-block text-white font-weight-bold d-flex justify-content-center" style="background-color: #3b5998">
+              <img src="{% static 'images/misc/facebook_logo.png' %}" alt="naver logo" style="height:1.2rem" class="mr-1">
+              <h6 class="texn-center w-100 m-0">Continue with Facebook</h6>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

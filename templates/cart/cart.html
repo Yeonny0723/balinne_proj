@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load i18n %} 
+{% load static %}
+{% block content %}
+<section class="section-content padding-y bg">
+    <div class="container">
+    <h1 class="w-100 text-center">My Cart</h1>
+    <hr class="solid" style="width:20%; max-width:50px;">
+    {% if not cart_items %}
+    <h2 class='text-center'>{% trans "쇼핑카트에 아직 제품이 없습니다!" %}</h2>
+    <br>
+    <div class="text-center"><a href="{% url 'shop' %}" class="btn btn-primary mb-5">{% trans "이어서 쇼핑하기" %}</a></div>
+    </div>
+    </section>
+    {% else %}
+    <div class="row" style="width:110%;">
+        <aside class="col-lg-8 pb-2">
+    <div class="card">
+    <!-- table to show on mobile -->
+    <table class="show_mobile_size table table-borderless table-shopping-cart" style="display:none;">
+    <thead class="text-muted">
+    <tr class="small text-uppercase">
+      <th scope="col"><h4>{% trans "상품" %}</h4></th>
+    </tr>
+    </thead>
+    <tbody style="display:table; width:100%;">
+    {% for cart_item in cart_items %}
+    <tr>
+        <td class="d-flex justify-content-around w-100">
+            <div class="col-5"><a href="{{ cart_item.product.get_url }}"><div><img src='{{ cart_item.product.product_thumbnail_img.url }}' class="img-sm"></div></a></div>
+            <div class="col-5">
+                <a href="{{ cart_item.product.get_url }}" class="title text-dark"><h3>{{ cart_item.product.product_name }}</h3></a>
+                <div> 
+                    <div class="input-group">
+                        <form action='{% url "decrement_cart" cart_item.product.id cart_item.id %}' method="post">
+                            {% csrf_token %}
+                            <a href='{% url "decrement_cart" cart_item.product.id cart_item.id %}' class="d-flex"><i class="fa fa-minus"  style="font-size:0.5em;"></i> </a>
+                        </form>
+                        <div><h4 class="px-1">{{ cart_item.quantity }} {% trans "개" %}</h4></div>
+                        <form action='{% url "add_cart" cart_item.product.id %}' method="post">
+                            {% csrf_token %}
+                            <a href='{% url "add_cart" cart_item.product.id %}' class="d-flex"><i class="fa fa-plus" style="font-size:0.5em;"></i></a>
+                        </form>
+                    </div> 
+                </div> 
+                <div class="price-wrap"> 
+                    <h4 class="price">{{CURRENT_CURRENCY}}  {{ cart_item.sub_total }}</h4> 
+                    <p class="text-muted">{{CURRENT_CURRENCY}}  {{ cart_item.product.price }}  {% trans "/1개" %} </p> 
+                </div> 
+            </div>
+            <div class="col-2 d-flex justify-content-end align-items-center">
+                <a href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}" class="btn btn-danger hide_mobile_size"><span>삭제</span></a>
+                <a href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}" class="show_mobile_size" style="display:none;"><h3><strong>&times;</strong></h3></a>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    <!-- table to show on webview -->
+    <table class="hide_mobile_size table table-borderless table-shopping-cart">
+    <thead class="text-muted">
+    <tr class="small text-uppercase">
+      <th scope="col"><h4>{% trans "상품" %}</h4></th>
+      <th scope="col"><h4>{% trans "수량" %}</h4></th>
+      <th scope="col"><h4>{% trans "가격" %}</h4></th>
+      <th scope="col" class="text-right"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for cart_item in cart_items %}
+    <tr>
+        <td>
+            <figure class="itemside align-items-center">
+                <a href="{{ cart_item.product.get_url }}"><div><img src='{{ cart_item.product.product_thumbnail_img.url }}' class="img-sm mr-4"></div></a>
+                <figcaption class="info">
+                    <a href="{{ cart_item.product.get_url }}" class="title text-dark"><span>{{ cart_item.product.product_name }}</span></a>
+                </figcaption>
+            </figure>
+        </td>
+        <td class="align-middle"> 
+            <div class="col"> 
+                <div class="input-group input-spinner">
+                    <div class="input-group-prepend">
+                    <form action='{% url "decrement_cart" cart_item.product.id cart_item.id %}' method="post">
+                        {% csrf_token %}
+                        <a href='{% url "decrement_cart" cart_item.product.id cart_item.id %}'><button class="btn btn-light" type="submit" id="button-plus"><i class="fa fa-minus"></i> </button></a>
+                    </form>
+                    </div>
+                    <input type="text" class="form-control"  value="{{ cart_item.quantity }}">
+                    <div class="input-group-append">
+                    <form action='{% url "add_cart" cart_item.product.id %}' method="post">
+                        {% csrf_token %}
+                        <a href='{% url "add_cart" cart_item.product.id %}'><button class="btn btn-light" type="submit" id="button-minus"> <i class="fa fa-plus"></i> </button></a>
+                    </form>
+                    </div>
+                </div> 
+            </div> 
+        </td>
+        <td class="align-middle"> 
+            <div class="price-wrap"> 
+                <h4 class="price">{{CURRENT_CURRENCY}}{{ cart_item.sub_total }}</h4> 
+                <p class="text-muted">{{CURRENT_CURRENCY}}{{ cart_item.product.price }}  {% trans "/1개" %} </p> 
+            </div> 
+        </td>
+        <td class="text-right align-middle"> 
+        <a href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}" class="btn btn-danger hide_mobile_size" style="min-width: 50px;"><span>삭제</span></a>
+        <a href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}" class="show_mobile_size" style="display:none;"><span style="color:tomato;"><strong>&times;</strong></span></a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    </div> <!-- card.// -->
+    
+    </aside> <!-- col.// -->
+    <aside class="col-lg-4">
+        <div class="card">
+        <div class="card-body">
+            <dl class="dlist-align">
+                <dt><h3>{% trans "총 제품 가격" %}:</h3></dt>
+                <dd class="text-right"><h4>{{CURRENT_CURRENCY}} {{ total }}</h4></dd>
+            </dl>
+            <dl class="dlist-align">
+                <dt><h3>{% trans "세금" %}:</h3></dt>
+                <dd class="text-right"><h4>{{CURRENT_CURRENCY}} {{ tax }}</h4></dd>
+            </dl>
+            <dl class="dlist-align">
+                <dt><h3>{% trans "총 가격" %}:</h3></dt>
+                <dd class="text-right text-dark b"><h4><strong>{{CURRENT_CURRENCY}} {{ grand_total }}</strong></h4></dd>
+            </dl>
+            <hr>
+            <a href="{% url 'checkout' %}" class="btn btn-primary btn-block"><h3>{% trans "주문하기" %}</h3></a>
+            <a href='{% url "shop" %}' class="btn btn-light btn-block"><h3>{% trans "이어서 쇼핑하기" %}</h3></a>
+        </div> <!-- card-body.// -->
+        </div> <!-- card.// -->
+    
+    </aside> <!-- col.// -->
+    
+    
+    </div> <!-- row.// -->
+    
+    </div> <!-- container .//  -->
+    </section>
+    {% endif %}
+    {% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load i18n %} 
+
+{% block content %}
+<section class="section-content padding-y bg">
+  <div class="container">
+  <h1 class="w-100 text-center">My Likes</h1>
+  <hr class="solid" style="width:20%; max-width:50px;">
+  {% if likes|length == 0 %}
+  <h2 class='text-center'>{% trans "아직 좋아요를 누른 제품이 없습니다!" %}</h2>
+  <br>
+  <div class="text-center"><a href="{% url 'shop' %}" class="btn btn-primary mb-5">{% trans "이어서 쇼핑하기" %}</a></div>
+  </div>
+  </section>
+  {% else %}
+    {% for like in likes %}
+    <div class="col-md-6 col-lg-3 mb-4">
+      <a href="{{like.product.get_url}}">
+      <div class="bg-white rounded shadow-sm"><img src="{{ like.product.product_thumbnail_img.url }}" alt="product thumbnail image" class="img-fluid card-img-top"></div>
+      </a>
+      <div class="p-4">
+        <h5 class="d-flex justify-content-between"> 
+            <a href="{% url 'product_detail' like.product.category.slug  like.product.slug %}" class="text-dark"><h2>{{ like.product.product_name }}</h2></a> 
+        </h5>
+        <p class="small text-muted mb-0">{{ like.product.price }}원</p>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+</div>
+</section>
+{% endblock %}
+
+
+
+

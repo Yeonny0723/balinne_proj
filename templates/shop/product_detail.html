@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load i18n %} 
+{% block content %}
+<div class="hero" id="top">
+    <div class="hero-image" style="background-image: url('{{product.product_thumbnail_img.url}}');"></div>
+    <h1 class="text-shadow">{{ product.product_name }}</h1>
+    <h2 class="text-shadow">{{product.ingredients}}</h2>
+    <h4 class="text-shadow">{{product.short_desc}}</h4>
+    <h4 class="text-shadow">{{product.med_desc}}</h4>
+</div>
+<div class="navbar-wrapper">
+    <nav id="prd_detail_nav" style="z-index:50;">
+        <div class="content" style="padding: 2em 0 0 0;">
+            <ul>
+                <li class="action-item"><a href="#top"><h4>Top</h4></a></li>
+                <li><a href="#vision"><h4>{% trans "갤러리" %}</h4></a></li>
+                <li><a href="#product"><h4>{% trans "상품상세" %}</h4></a></li>
+                <li><a href="#team"><h4>{% trans "구매하기" %}</h4></a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<br>
+<section id="vision" class="d-flex justify-content-center pb-5">
+    <div class="content">
+        <h1>Product Gallery</h1>
+        <div class="title_break"></div>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="custCarousel" class="carousel slide" data-ride="carousel" align="center">
+                        <!-- slides -->
+                        <div class="carousel-inner">
+                            <div class="carousel-item active"><img class="shadow rounded" src="{{product.product_thumbnail_img.url}}" alt="" style="width:80vw; max-width:500px;"> </div>
+                            {% for product in productGallery %}
+                            <div class="carousel-item"> <img class="shadow rounded" src="{{product.gallery_image.url}}" alt="product gallery img" style="width:80vw; max-width:500px;"> </div>
+                            {% endfor %}
+                        </div>
+                        <a class="carousel-control-prev" href="#custCarousel" data-slide="prev"> <span class="carousel-control-prev-icon"></span> </a> 
+                        <a class="carousel-control-next" href="#custCarousel" data-slide="next"> <span class="carousel-control-next-icon"></span> </a> 
+                        <ol class="carousel-indicators list-inline">
+                            <li class="list-inline-item active"> <a id="carousel-selector-0" class="selected" data-slide-to="0" data-target="#custCarousel"> <img src="{{product.product_thumbnail_img.url}}" class="img-fluid" style="width:30vw;"> </a> </li>
+                            {% for product in productGallery %}
+                            <li class="list-inline-item"> <a id="carousel-selector-{{ forloop.counter }}" data-slide-to="{{ forloop.counter }}" data-target="#custCarousel"> <img src="{{product.gallery_image.url}}" class="img-fluid" style="width:30vw;"> </a> </li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br>
+<section id="product" class="d-flex justify-content-center">
+    <div class="content">
+        <h1>Product Details</h1>
+        <div class="title_break"></div>
+        <div class="productDetail-container d-flex flex-column justify-content-center align-items-center">
+            <!-- text -->
+            {% for content in prodctDesc %}
+            {% if content.desc_text %}
+            <div class="row my-5 w-100 appear_container d-flex justify-content-center" style="width:80vw; max-width:700px;">
+                <span class="text-center appear_element">{{content.desc_text}}</span>
+            </div>
+            {% endif %}
+            {% if content.desc_image %}
+            <div class="row my-5 w-100 appear_container" style="width:80vw; max-width:700px;">
+                <div class="col">
+                    <img class="w-100" src="{{content.desc_image.url}}" alt="">
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<br>
+<section id="team" class="d-flex justify-content-center">
+    <div class="content">
+        <h1>구매하기</h1>
+        <div class="title_break"></div>
+        <div class="row">
+            <div class="col-sm-6 mr-1 mb-4">
+                <img class="img-fluid rounded shadow" src="{{product.product_thumbnail_img.url}}" alt="add cart section product preview">
+            </div>
+            <div class="col-sm-5">
+                <article class="content-body p-0">
+                    <h1 class="title">{{ product.product_name }}</h1>
+                    <div class="mb-3"> 
+                        <h2>{{ product.price }}원</h2>
+                    </div> 
+                    <span>{{product.short_desc}}</span>
+                    <hr>
+                    <span>배송완료까지 4-7영업일 소요됩니다.</span>
+                    <form action="{% url 'add_cart' product.id %}" method='POST' style="padding: 10px;">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="item-option-select m-0">
+                                <div class="qty-input shadow">
+                                    <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
+                                    <input type="hidden" name="product-id" value="{{ product.id }}">
+                                    <input class="product-qty" type="number" name="product-qty" min="0" max="10" value="1">
+                                    <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
+                                </div>
+                            </div>
+                            {% if product.stock <= 0 %}
+                            <button tyle="submit" class="ml-auto btn btn-primary shadow disabled"><h3>{% trans "재고소진" %}  <i class="fas fa-shopping-cart"></i></h3></button>
+                            {% else %}
+                            <button tyle="submit" class="ml-auto btn btn-primary shadow "><h3 class="m-0">{% trans "장바구니에 담기" %}  <i class="fas fa-shopping-cart"></i></h3></button>
+                            {% endif %}
+                        </div> <!-- row.// -->
+                    </form>
+                    <hr>
+                </article> <!-- product-info-aside .// -->
+            </div>
+        </div> <!-- col ends-->
+        </div> <!--row ends-->
+    </div>
+</section>
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6020c204966c4c2b"></script>
+<script>
+    $(function() {
+        $(window).scroll(function() {
+            /************************
+             * Paralax image effect *
+             ************************/
+            var FACTOR = 0.5;
+            var $heroImage = $('.hero-image');
+
+            /* Calculate percentComplete, which goes from 0 to 1 */
+            var distanceScrolled = Math.max(0, $(window).scrollTop());
+            var totalDistanceToScroll = $heroImage.height();
+            var percentComplete = Math.min(distanceScrolled / totalDistanceToScroll, 1);
+
+            /* Use percentComplete to determine how much we translate */
+            var translateY = (percentComplete * 100 * FACTOR);
+
+            /* Apply the transform */
+            $heroImage.css({'transform': 'translateY(' + translateY + '%)'});
+
+            /**********************
+             * Pinning the navbar *
+             **********************/
+
+            var $navbar = $('#prd_detail_nav');
+            var $navbarWrapper = $('.navbar-wrapper')
+
+            /* navbarWrapper never moves, so it's a good pinPoint */
+            var pinPoint = $navbarWrapper.offset().top;
+
+            /* add or remove the 'pinned' class depending on what side of the pin
+            * point we are.
+            */
+            if (distanceScrolled >= pinPoint) {
+                $navbar.addClass('pinned');
+            } else {
+                $navbar.removeClass('pinned')
+            }
+        });
+
+        /*************
+         * Scroll to *
+         *************/
+
+        $('a[href*="#"]').click(function(e) {
+            e.preventDefault();
+            var $target = $($(this).attr('href'));
+            var scrollTop = $target.offset().top;
+            $('html, body').animate({'scrollTop': scrollTop}, 500);
+        });
+});
+// Quantity input tag
+var QtyInput = (function () {
+	var $qtyInputs = $(".qty-input");
+
+	if (!$qtyInputs.length) {
+		return;
+	}
+
+	var $inputs = $qtyInputs.find(".product-qty");
+	var $countBtn = $qtyInputs.find(".qty-count");
+	var qtyMin = parseInt($inputs.attr("min"));
+	var qtyMax = parseInt($inputs.attr("max"));
+
+	$inputs.change(function () {
+		var $this = $(this);
+		var $minusBtn = $this.siblings(".qty-count--minus");
+		var $addBtn = $this.siblings(".qty-count--add");
+		var qty = parseInt($this.val());
+
+		if (isNaN(qty) || qty <= qtyMin) {
+			$this.val(qtyMin);
+			$minusBtn.attr("disabled", true);
+		} else {
+			$minusBtn.attr("disabled", false);
+			
+			if(qty >= qtyMax){
+				$this.val(qtyMax);
+				$addBtn.attr('disabled', true);
+			} else {
+				$this.val(qty);
+				$addBtn.attr('disabled', false);
+			}
+		}
+	});
+
+	$countBtn.click(function () {
+		var operator = this.dataset.action;
+		var $this = $(this);
+		var $input = $this.siblings(".product-qty");
+		var qty = parseInt($input.val());
+
+		if (operator == "add") {
+			qty += 1;
+			if (qty >= qtyMin + 1) {
+				$this.siblings(".qty-count--minus").attr("disabled", false);
+			}
+
+			if (qty >= qtyMax) {
+				$this.attr("disabled", true);
+			}
+		} else {
+			qty = qty <= qtyMin ? qtyMin : (qty -= 1);
+			
+			if (qty == qtyMin) {
+				$this.attr("disabled", true);
+			}
+
+			if (qty < qtyMax) {
+				$this.siblings(".qty-count--add").attr("disabled", false);
+			}
+		}
+
+		$input.val(qty);
+	});
+})();
+
+</script>
+
+{% endblock %}
+
+<!-- Copyright (c) 2022 by Shikun Ke (https://codepen.io/BarryKe/pen/advLWa)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ -->
+
+ <!-- Copyright (c) 2022 by Chyno Deluxe (https://codepen.io/ChynoDeluxe/pen/poyNEay)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
+

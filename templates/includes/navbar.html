@@ -1,0 +1,211 @@
+{% load static %}
+{% load i18n %}   
+<header id="section-header-container" class="fixed-top">
+  <div id="section-header">
+  <div class="header">
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+  </div>
+    <nav class="navbar navbar-expand-sm navbar-light border-bottom p-0">
+    <div class="container-fluid">
+      <ul class="navbar-nav d-flex flex-row">
+        <form action="{% url 'set_language' %}" method="post">
+          {% csrf_token %}
+          <select id="lang_select" name="language" class="form-control" onchange="this.form.submit()" style="background:none;border:none;padding:0;">
+              {% get_current_language as LANGUAGE_CODE %}
+              {% get_available_languages as LANGUAGES %}
+              {% get_language_info_list for LANGUAGES as languages %}
+              {% for language in languages %}
+              <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                {{ language.name_local }} ({{ language.code }})
+              </option>
+              {% endfor %}
+          </select>
+        </form>
+        <form action="{% url 'set_currency' %}" method="post">
+          {% csrf_token %}
+          <select id="currency_select" name="currency" class="form-control" onchange="this.form.submit()" style="background:none;border:none;">
+            {% for tpl in CURRENCIES %}
+            {% if tpl.0 == 'won' %}
+            <option value="{{tpl.0}}">{{tpl.1}}</option>
+            {% else %}
+            <option value="{{tpl.0}}" disabled>{{tpl.1}}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </form>
+      </ul>
+      </div>
+    </nav>
+    <section class="header-main border-bottom text-light w-100">
+      <div class="row align-items-center w-100 py-1 px-3">
+          <div class="col-3 d-flex justify-content-start">
+          <div id="mySidenav" class="sidenav" style="z-index:200;">
+              <a href="{% url 'index' %}"><h1 class="m-0 text-center">B A L I N N E</h1></a>
+              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><h1>&times;</h1></a>
+              <a class= "text-center custom-nav {% if '/aboutUs/' == request.path %} custom-nav-active {% endif %}" href="{% url 'aboutUs' %}"><h3>{% trans "Présentation" %}</h3></a>
+              <a class= "text-center custom-nav {% if '/shop/' == request.path %} custom-nav-active {% endif %}" href="{% url 'shop' %}"><h3>{% trans "Boutique" %}</h3> </a>
+              <a class= "text-center custom-nav {% if '/news/' == request.path %} custom-nav-active {% endif %}" href="{% url 'news' %}"><h3>{% trans "News" %}</h3> </a>
+              <a class= "text-center custom-nav {% if '/category/' == request.path %} custom-nav-active {% endif %}" href="{% url 'category_view' %}"><h3>{% trans "La collection" %} </h3></a>
+              <a class= "text-center custom-nav {% if '/visit/' == request.path %} custom-nav-active {% endif %}" href="{% url 'visit' %}"><h3>{% trans "Visit" %} </h3></a>
+              <a class= "text-center custom-nav {% if '/dashboard/' == request.path %} custom-nav-active {% endif %}" href="{% url 'dashboard' %}"><h3>{% trans "My page" %} </h3></a>
+              <a class= "text-center custom-nav {% if '/newArrival/' == request.path %} custom-nav-active {% endif %}" href="{% url 'newArrival' %}?page=1">
+                {% if visited_newarrival %}
+                <h3>{% trans "Nouveau arrivé" %}</h3>
+                {% else %}
+                <h3 style="padding-left:12%">{% trans "Nouveau arrivé" %}
+                  <span class="badge badge-pill badge-danger notify position-relative" style="margin:0;">New</span>
+                </h3>
+                {% endif %}
+              </a>
+              <a class= "text-center custom-nav {% if '//' == request.path %} custom-nav-active {% endif %}" href="{% url 'contact' %}"><h3>{% trans "Contact" %}</h3></a>
+            </div>
+              <i class="fa fa-bars" id="nav_menu-btn" class="text-shadow-mild" onclick="openNav()">   MENU</i>
+          </div> 
+          <div class="col-6 d-flex justify-content-center align-items-center">
+              {% if '/' == request.path %}
+              <h1 class="m-0 text-shadow-mild py-1" id="scrollToTopBtn">B A L I N N E</h1>
+              {% else %}
+              <a href="{% url 'index' %}"><h1 class="m-0 text-shadow-mild">B A L I N N E</h1></a>
+              {% endif %}
+          </div>
+          <div class="col-3 navbar-profile col d-flex justify-content-between">
+              {% if user.is_authenticated %}
+              <a id="navbar_user" class="d-block text-shadow-mild" href="{% url 'dashboard' %}"><i class="fas fa-user" style="display:none;"></i><span>{{ user.username }}님</span> </a>
+              <a class="d-block text-shadow-mild" href="{% url 'my_likes' %}"><span><i class="far fa-heart js-heart heart"></i></span></a>
+              <a href="{% url 'cart' %}" class="d-block text-shadow-mild">
+                <i class="fa fa-shopping-cart"></i>
+                <span class="badge badge-pill badge-danger notify">{{ cart_count }}</span>
+              </a>
+              {% else %}
+              <a class="d-block text-shadow-mild w-100" href="{% url 'account_login' %}" style="text-align: end;"><span> {% trans "LOGIN" %}</span> </a>
+              {% endif %}
+          </div> 
+      </div>
+    </section> 
+    <br>
+    {% include 'includes/alerts.html' %}
+    </div>
+    <script>
+      var rootElement = document.documentElement
+      scrollToTopBtn.addEventListener("click", scrollToTop)
+      function scrollToTop() {
+        // Scroll to top logic
+        rootElement.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        })
+      }
+    </script>
+    <!-- navbar element apply effect by scroll -->
+    <script>
+      $(window).scroll(function () {
+        var sc = $(window).scrollTop()
+        if (sc > 50) {
+          $("#section-header").addClass("navbar-scroll")
+        } 
+        else{
+          $("#section-header").removeClass("navbar-scroll")
+        }
+      });
+    </script>
+    <script>
+      (function(){
+          var doc = document.documentElement;
+          var w = window;
+          var prevScroll = w.scrollY || doc.scrollTop;
+          var curScroll;
+          var direction = 0;
+          var prevDirection = 0;
+          var header = document.getElementById('section-header-container');
+          var checkScroll = function() {
+
+            /*
+            ** Find the direction of scroll
+            ** 0 - initial, 1 - up, 2 - down
+            */
+
+            curScroll = w.scrollY || doc.scrollTop;
+            if (curScroll > prevScroll) { 
+              //scrolled up
+              direction = 2;
+            }
+            else if (curScroll < prevScroll) { 
+              //scrolled down
+              direction = 1;
+            }
+
+            if (direction !== prevDirection) {
+              toggleHeader(direction, curScroll);
+            }
+
+            prevScroll = curScroll;
+          };
+
+          var toggleHeader = function(direction, curScroll) {
+            if (direction === 2 && curScroll > 150) { 
+
+              //replace 52 with the height of your header in px
+
+              header.classList.add('hide');
+              prevDirection = direction;
+            }
+            else if (direction === 1) {
+              header.classList.remove('hide');
+              prevDirection = direction;
+            }
+          };
+
+          window.addEventListener('scroll', checkScroll);
+
+          })();
+    </script>
+    <script>
+    // variables
+    var home_url = "{% url 'index' %}"
+    
+    // close side nav for default
+    closeNav();
+    
+    /* Set the width of the side navigation */
+    function openNav() {
+      var mySidenav = document.getElementById("mySidenav");
+      mySidenav.style.width = '55%';
+    }
+    
+    /* Set the width of the side navigation to 0 */
+    function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+    }
+    
+    /* Close sidebar by clicking outside */
+    document.onclick = function(e){
+      if (e.target.id !== 'mySidenav' && e.target.id !== 'nav_menu-btn'){
+        closeNav();
+      }
+    }
+    
+    /* scroll progress bar */
+    function progressBarScroll() {
+      let winScroll = document.body.scrollTop || document.documentElement.scrollTop,
+          height = document.documentElement.scrollHeight - document.documentElement.clientHeight,
+          scrolled = (winScroll / height) * 100;
+      document.getElementById("progressBar").style.width = scrolled + "%";
+    }
+    
+    // run progress bar scroll func
+    window.onscroll = function () {
+      progressBarScroll();
+    };
+    </script>
+</header>
+
+<!-- Copyright (c) 2022 by Matt Smith (https://codepen.io/AllThingsSmitty/pen/gvpNWL)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
+

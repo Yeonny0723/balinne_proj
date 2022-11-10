@@ -1,0 +1,158 @@
+{% extends 'base.html' %} 
+{% load i18n %} 
+{% block content %}
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y bg">
+  <div class="container">
+    <h1 class="w-100 text-center">My Page</h1>
+    <hr class="solid" style="width:20%; max-width:50px;">
+    <div class="row">
+      {% include 'includes/dashboard_sidebar.html' %}
+      <main class="col-md-9">
+        <article class="card">
+          <header class="card-header">
+            <strong class="d-inline-block mr-3"><h2>{% trans "프로필 수정하기" %}</h2></strong>
+          </header>
+          <form action="{% url 'edit_profile' %}" method="POST">
+            {% csrf_token %}
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <span>  {% trans "유저네임" %}</span>
+                      {{ user_form.username }}
+                    </div>
+                    <div class="form-group col-md-6">
+                      <span>  {% trans "이메일" %}</span>
+                      {{ user_form.email }}
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col form-group">
+                      <input
+                        type="button"
+                        class="btn btn-primary btn-sm"
+                        onclick="execDaumPostcode()"
+                        value="우편주소 업데이트"
+                      /><br />
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col col-4 form-group">
+                      <span>  {% trans "우편번호" %}</span>
+                      {{ address_form.postcode }}
+                      <span>  {% trans "추가주소" %}</span>
+                      {{ address_form.extra_address }}
+                    </div>
+                    <div class="col col-8 form-group">
+                      <span>  {% trans "도로명주소" %}</span>
+                      {{ address_form.doromeong_address }}
+                      <span>  {% trans "상세주소" %}</span>
+                      {{ address_form.detail_address }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 d-flex justify-content-between">
+                  <button type="button" class="col-4 btn btn-secondary btn-sm" data-toggle="modal" data-target="#resignAccountModal">
+                    <h3 class="m-0"><i class="fa fa-power-off align-middle"></i>  {% trans "계정삭제" %}</h3>
+                  </button>
+                  <button type="submit" class="col-4 btn btn-primary btn-sm">
+                    <h3 class="m-0">{% trans "저장하기" %}</h3>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- card-body .// -->
+          </form>
+        </article>
+        <!-- order-group.// -->
+      </main>
+    </div>
+    <!-- row.// -->
+  </div>
+  <!-- Button trigger modal -->
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="resignAccountModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="resignAccountModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resignAccountModalLabel">
+            {% trans '정말로 계정을 삭제하시겠습니까?' %}
+            <!-- Are you sure you want to delete your account? -->
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% trans '계정삭제는 영구적으로 삭제 이전의 상태로 복구가 불가합니다. ' %} <br>
+          {% trans '계정삭제 후 관련 모든 데이터는 삭제될 것이며' %} 
+          <strong>{% trans '누구도' %}</strong> {% trans '복구할 수 없습니다.' %}
+          <!-- This is a permanent action and it can't be undone. <br />
+          After you delete your account, all your relatable data will be deleted
+          and <strong>no one</strong> will be able to recover it. -->
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="consentDeleteAccount"
+              value="consentDeleteAccount"
+            />
+            <label class="form-check-label" for="consentDeleteAccount"
+              ><p>
+                <!-- I understand this action is permanent and no one will be able to
+                undo it. -->
+                {% trans '상기사항을 인지하였습니다.' %}
+              </p></label
+            >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            {% trans '아니요' %}
+          </button>
+          <button
+            id="deleteAccountBtn"
+            type="submit"
+            class="btn btn-primary disabled"
+          >
+            <a id="account_delete_a" href="">{% trans '네' %}</a>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  const account_delete = "{% url 'account_resign' %}";
+  $(document).ready(function () {
+    $("#consentDeleteAccount").click(function () {
+      var btn = document.getElementById("deleteAccountBtn");
+      var a_btn = document.getElementById("account_delete_a");
+      if ($(this).is(":checked")) {
+        btn.classList.remove("disabled");
+        a_btn.href = account_delete;
+      } else {
+        btn.classList.add("disabled");
+        a_btn.href = "";
+      }
+    });
+  });
+</script>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+{% endblock %}

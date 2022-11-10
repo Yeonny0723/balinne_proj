@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% load i18n %} 
+{% load static %}
+{% block content %}
+<section class="section-content padding-y bg">
+  <form action="{% url 'place_order' %}" method="POST" id="orderAddressForm">
+  <div class="container">
+    <div class="row">
+      <aside class="col-lg-6">
+        <div class="card mb-4"> 
+          <div class="card-body">
+            <h1 class="'card-title mg-4">{% trans "배송지 주소" %}</h1>
+              {% csrf_token %}
+              {% if address_exists %}
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="retreieveAddress" checked>
+                <label class="custom-control-label" for="retreieveAddress"><h3>{% trans "저장된 주소 불러오기" %}</h3></label>
+                </div>
+              {% endif %}
+              <div class="form-row">
+                  <div class="col-4 form-group">
+                      <label for=""><span>{% trans "수령인" %}</span></label>
+                      {{ form.recipient }}
+                  </div>
+                  <div class="col-8 form-group">
+                      <label for=""><span>{% trans "이메일" %} ({% trans "선택" %})</span></label>
+                      {{ form.email }}
+                  </div>
+              </div>
+              <div class="form-row">
+                  <div class="col form-group">
+                      <label for=""><span>{% trans "연락처 1" %}</span></label>
+                      {{ form.phone_1 }}
+                  </div>
+                  <div class="col form-group">
+                      <label for=""><span>{% trans "연락처 2" %} ({% trans "선택" %})</span></label>
+                      {{ form.phone_2 }}
+                  </div>
+              </div>
+              <div class="form-row">
+                  <div class="col form-group">
+                      <input type="button" class="btn btn-primary btn-sm" onclick="execDaumPostcode()" value="{% trans '배송지 찾기' %}"><br>
+                  </div>
+              </div>
+              <div class="form-row">
+                  <div class="col col-4 form-group">
+                      <label for="address_postcode"><span>{% trans "우편번호" %}</span></label>
+                      {{ form.postcode }}
+                      <label for="extra_address"><span>{% trans "추가주소" %}</span></label>
+                      {{ form.extra_address }}
+                  </div>
+                  <div class="col col-8 form-group">
+                      <label for="doromeong_address"><span>{% trans "도로명주소" %}</span></label>
+                      {{ form.doromeong_address }}
+                      <label for="detail_address"><span>{% trans "상세주소" %}</span></label>
+                      {{ form.detail_address }}
+                  </div>
+              </div>
+              <div class="form-row">
+                  <label for="order_note" class="form-label"><span>{% trans "베송메모" %}</span></label>
+                  {{ form.order_note }}
+                  <datalist id="datalistOptions">
+                    <option value='{% trans "배송 전에 미리 연락바랍니다." %}'>
+                    <option value='{% trans "부재시 경비실에 맡겨주세요." %}'>
+                    <option value='{% trans "부재시 전화 주시거나 문자 남겨주세요." %}'>
+                  </datalist>
+                </div>
+            </form>
+          </div>
+        </div><!-- card.// -->
+      </aside>
+      <aside class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+             <!-- table to show on mobile -->
+            <table class="show_mobile_size table table-borderless table-shopping-cart" style="display:none;">
+              <thead class="text-muted">
+              <tr class="small text-uppercase">
+                <th scope="col"><h4>{% trans "상품" %}</h4></th>
+              </tr>
+              </thead>
+              <tbody style="display:table; width:100%;">
+              {% for cart_item in cart_items %}
+              <tr>
+                  <td class="row w-100 d-flex justify-content-between">
+                    <div class="col">
+                      <h4 class="w-100">{{ cart_item.product.product_name }}</h4>
+                      <img src='{{ cart_item.product.product_thumbnail_img.url }}' class="img-sm">
+                    </div>  
+                    <div class="col text-right d-flex flex-column justify-content-center">
+                        <h4 class="px-1">{{ cart_item.quantity }} {% trans "개" %}</h4>
+                        <h4 class="price">{{CURRENT_CURRENCY}}  {{ cart_item.sub_total }}</h4> 
+                        <p class="text-muted">{{CURRENT_CURRENCY}}  {{ cart_item.product.price }}  {% trans "/1개" %} </p> 
+                    </div>
+                  </td>
+              </tr>
+              {% endfor %}
+              </tbody>
+              </table>
+              <!-- table to show on webview -->
+              <table class="hide_mobile_size table table-borderless table-shopping-cart">
+              <thead class="text-muted">
+              <tr class="small text-uppercase">
+                <th scope="col"><h4>{% trans "상품" %}</h4></th>
+                <th scope="col"><h4>{% trans "수량" %}</h4></th>
+                <th scope="col"><h4>{% trans "가격" %}</h4></th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for cart_item in cart_items %}
+              <tr>
+                  <td class="align-middle">
+                      <figure class="itemside align-items-center">
+                          <a href="{{ cart_item.product.get_url }}"><div><img src='{{ cart_item.product.product_thumbnail_img.url }}' class="img-sm mr-4"></div></a>
+                          <figcaption class="info">
+                              <a href="{{ cart_item.product.get_url }}" class="title text-dark"><span>{{ cart_item.product.product_name }}</span></a>
+                          </figcaption>
+                      </figure>
+                  </td>
+                  <td class="align-middle"> 
+                      <div class="col"> {{ cart_item.quantity }}</div> 
+                  </td>
+                  <td class="align-middle">  
+                      <div class="price-wrap"> 
+                          <h4 class="price">{{CURRENT_CURRENCY}}{{ cart_item.sub_total }}</h4> 
+                          <p class="text-muted">{{CURRENT_CURRENCY}}{{ cart_item.product.price }}  {% trans "/1개" %} </p> 
+                      </div> 
+                  </td>
+              </tr>
+              {% endfor %}
+              </tbody>
+              </table>
+              {% if address_exists %}
+              <button type="button" id="placeOrderBtn" class="btn btn-primary btn-block mt-4">{% trans "주문하기" %}</button> <!-- button to determin user behaviour -->
+              <button hidden type="submit" id="keepAddress" name="to_save" value="false" class="btn btn-primary btn-block">{% trans "주문하기" %}</button>
+              <button hidden type="button" id="modifyAddress" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modifyAddress_modal">{% trans "주문하기" %}</button>
+              {% else %}
+              <button type="button" class="btn btn-primary btn-block" id="newAddress_modal" data-toggle="modal" data-target="#placeOrderWNewAddress">{% trans "주문하기" %}</button>
+              {% endif %}
+              <a href='{% url "shop" %}' class="btn btn-light btn-block">{% trans "이어서 쇼핑하기" %}</a>
+
+              <!-- Button trigger modal -->
+              <!-- Modal -->
+              <div class="modal fade" id="placeOrderWNewAddress" tabindex="-1" role="dialog" aria-labelledby="placeOrderWNewAddressLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="placeOrderWNewAddressLabel">{% trans "배송주소" %}</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      {% trans "다음 더 빠른 주문을 위해 배송 정보를 저장할까요?" %} <br>
+                      {% trans " (안전한 공간에 보관됩니다!)" %}
+                    </div>
+                    <div class="modal-footer">
+                        <button style="display:none;" class="btn btn-secondary btn-sm" value="false" name="to_save">{% trans "괜찮아요!" %}</button>
+                        <button type="submit" class="btn btn-secondary btn-sm" value="false" name="to_save">{% trans "괜찮아요!" %}</button>
+                        <button type="submit" class="btn btn-primary" value="true" name="to_save">{% trans "좋아요!" %}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Modal -->
+              <div class="modal fade" id="modifyAddress_modal" tabindex="-1" role="dialog" aria-labelledby="modifyAddressLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                 <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modifyAddressLabel">{% trans "배송주소" %}</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      {% trans "수정된 배송 정보를 저장할까요?" %} <br>
+                      {% trans " (안전한 공간에 보관됩니다!)" %}
+                    </div>
+                    <div class="modal-footer">
+                        <button style="display:none;" class="btn btn-secondary btn-sm" value="false" name="to_save">{% trans "괜찮아요!" %}</button>
+                        <button type="submit" class="btn btn-secondary btn-sm" value="false" name="to_save">{% trans "괜찮아요!" %}</button>
+                        <button type="submit" class="btn btn-primary" value="true" name="to_save">{% trans "좋아요!" %}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div> <!-- card-body.// -->
+        </div> <!-- card.// -->
+      </aside> <!-- col.// -->
+    </div> <!-- row.// -->
+  </div> <!-- container .//  -->
+  </form>
+</section>
+<script>
+  var retreieveAddressBtn = document.getElementById("retreieveAddress")
+  retreieveAddressBtn.addEventListener("click", retreieveAddressToggle)
+  function retreieveAddressToggle(){
+    if ($("#retreieveAddress").is(':checked')) {
+        document.getElementById("id_recipient").value = "{{ address.recipient }}"
+        document.getElementById("id_email").value = "{{ address.email }}"
+        document.getElementById("id_phone_1").value = "{{ address.phone_1 }}"
+        document.getElementById("id_phone_2").value = "{{ address.phone_2 }}"
+        document.getElementById("address_postcode").value = "{{ address.postcode }}"
+        document.getElementById("doromeong_address").value = "{{ address.extra_address }}"
+        document.getElementById("extra_address").value = "{{ address.doromeong_address }}"
+        document.getElementById("detail_address").value = "{{ address.detail_address }}"
+    }
+    else {
+        //  reset input value here
+        document.getElementById("id_recipient").value = ""
+        document.getElementById("id_email").value = ""
+        document.getElementById("id_phone_1").value = ""
+        document.getElementById("id_phone_2").value = ""
+        document.getElementById("address_postcode").value = ""
+        document.getElementById("doromeong_address").value = ""
+        document.getElementById("extra_address").value = ""
+        document.getElementById("detail_address").value = ""
+    }
+  }
+</script>
+<script>
+  // dynamic placing order & save user billing address
+  var placeOrderBtn = document.getElementById("placeOrderBtn")
+  placeOrderBtn.addEventListener("click", processBtn)
+  function processBtn(){
+      var data_lst = ['recipient', 'email', 'phone_1', 'phone_2', 'address_postcode', 'doromeong_address', 'extra_address', 'detail_address']
+      var djg_field_lst = ['{{form.recipient.value}}', '{{form.email.value}}', '{{form.phone_1.value}}', '{{form.phone_2.value}}', '{{form.address_postcode.value}}', '{{form.doromeong_address.value}}', '{{form.extra_address.value}}', '{{form.detail_address.value}}']
+      for(i=0;i<data_lst.length;i++){
+        var el = data_lst[i]
+        var old_value = djg_field_lst[i]
+        var new_input = document.getElementsByName(el)[0]
+        var new_input_v
+        if(new_input != null){
+          new_input_v = new_input.value
+        } 
+        if (old_value != 'None'){
+          if (old_value != new_input_v){
+            $('#modifyAddress').click()
+            return false;
+          }
+        }
+      }
+      $('#keepAddress').click()
+  }
+</script>
+{% endblock %}

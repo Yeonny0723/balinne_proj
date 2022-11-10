@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load i18n %} 
+{% block content %}
+<section class="section-content padding-y bg">
+    <div class="container">
+        <h1 class="w-100 text-center">My Page</h1>
+        <hr class="solid" style="width:20%; max-width:50px;">
+        <div class="row">
+        {% include 'includes/dashboard_sidebar.html' %}
+        <main class="col-md-9">
+            <article class="card">
+            <header class="card-header">
+                <h2 class="d-inline-block mr-3">{% trans "환불 가능한 주문 내역" %}</h2>
+                <p>주문 시 바로 생산되는 유제품 특성상 취소 및 환불 정책에 따라 상품 준비 전 제품들만 환불 처리가 가능합니다. 자세한 사항은 <a href="{% url 'refundPolicy' %}" style="color:blue"><u>취소 및 환불 정책</u></a> 을 참고해주세요.</p>
+            </header>
+            <div class="card-body p-0">
+                <div class="row"> 
+                <div class="col-md-12">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col-3"><span><strong>{% trans "주문번호" %}</strong></span></th>
+                        <th scope="col-3"><span><strong>{% trans "주문자" %}</strong></span></th>
+                        <th scope="col-3"><span><strong>{% trans "주문일자" %}</strong></span></th>
+                        <th scope="col-3"><span><strong>{% trans "상태" %}</strong></span></th>
+                        <th scope="col-1"><span><strong></strong></span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for order in orders %}
+                      <!-- {% if order.order_status in '입금확인중,결제완료' %} -->
+                      <tr>
+                        <th scope="row"><a href="{% url 'order_detail' order.order_number %}"><span>{{ order.order_number }}</span></a></th>
+                        <td><span>{{ order.recipient }}</span></td>
+                        <td><span>{{ order.created_at.date }}</span></td>
+                        <td><span>{{ order.order_status }}</span></td>
+                        <td><a href="{% url 'process_refund' order.order_number %}" type="button" class="btn btn-sm btn-secondary"><p>환불신청</p></a></td>
+                      </tr>
+                      <!-- {% endif %} -->
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+             </div> <!-- row -->
+            </div> <!-- card-body .// -->
+            </article> <!-- order-group.// --> 
+        </main>
+    </div> <!-- row.// -->
+    </div>
+</section>
+    
+{% endblock %}

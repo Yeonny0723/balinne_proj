@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+<div class="d-flex justify-content-center align-items-center">
+  <div class="container text-dark w-100 d-flex align-items-center flex-column m-5 p-5" style="background-color: #F9FAFB;">
+  <div class="row">
+    <div class="jumbotron">
+        <h1><strong>{{status_code}} Error</strong></h1>
+        <h1>{{message}}</h1>
+        <p >{% trans '찾으시려는 페이지는 이동, 삭제되었거나 존재하지 않는 페이지입니다.' %}</strong></p>
+        <!-- The page you were looking for appears to have been moved, deleted or does not exist. -->
+        <hr class="my-4">
+        <p>{% trans '상단의 메뉴를 클릭하여 찾아보시거나, 홈페이지로 돌아가실 수 있습니다' %}</p>
+        <!-- Please use the navigation above or search below. You can also go back or visit the homepage. -->
+        {% if status_code == '500' %}
+        <p>{% trans '만에 하나 같은 문제가 반복된다면, 웹사이트 관리자에게 연락해주시기 바랍니다.' %}</p>
+        <!-- If this problem keep happens, please kindly report to the site admin -->
+        <form action="#">
+          <div class="form-group">
+            <input class="form-control" type="text" name="text_report" id="text_report" placeholder="Kindly report the technical issues here."/>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">{% trans '제출하기' %}</button>
+          </div>
+        </form>
+        {% endif %}
+        <p >
+          <a class="btn btn-primary btn-lg" href="#" role="button">{% trans '홈페이지로 돌아가기' %}</a>
+        </p>
+      </div>
+  </div>
+</div>
+</div>
+{% endblock %}
+
+  
+
+  
+
+  
+  

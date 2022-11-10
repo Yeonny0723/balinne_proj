@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- title -->
+    <div class="px-5 pb-4">
+            <div class="rounded banner">
+                <hr class="solid">
+                <h1 class="py-2 text-center">Order</h1>
+                <hr class="solid" style="width:20%; max-width:50px;">
+                  <form action="{% url 'shop' %}" method="GET" class="row d-flex py-1">
+                    <button class="col"><a class= "custom-nav_store {% if not request.GET.category %} custom-nav_store-active {% endif %}" href="{% url 'shop' %}"><h4>All Product</h4></a></button>
+                    {% for category in categories %}
+                    <button class= "col text-center custom-nav_store {% if category.slug == request.GET.category %} custom-nav_store-active {% endif %}" name="category" type="submit" value="{{category.slug}}"><h4>{{category.category_name}}</h4></button><br>
+                    {% endfor %}
+                </form>
+                </div>
+                <hr class="dotted">
+      </div>
+    </div>
+    <div class="row px-5 pb-5 d-flex justify-content-center">
+        {% if is_empty %}
+        <div class="m-4 alert alert-warning w-100" role="alert" style="block-size: fit-content">
+          <h6>No items found.</h6>
+        </div>
+        {% else %}
+        {% for product in products %}
+        <div class="col-sm-6 col-lg-3 mb-4 p-1 shadow card_hover">
+          <a href="{{product.get_url}}">
+          <div class="bg-white rounded shadow-sm"><img src="{{ product.product_thumbnail_img.url }}" alt="product thumbnail image" class="img-fluid card-img-top">
+          </a>
+            <div class="p-4">
+                <h5 class="d-flex justify-content-between"> 
+                    <a href="{% url 'product_detail' product.category.slug  product.slug %}" class="text-dark"><h2>{{ product.product_name }}</h2></a> 
+                    {% if product.id in liked_prd_id_lst %}
+                    <i class="redy fas fa-heart js-heart heart likin pulse liked" name="{{product.id}}"></i>
+                    {% else %}
+                    <i class="far fa-heart js-heart heart likin" name="{{product.id}}"></i>
+                    {% endif %}
+                </h5>
+                <p class="small text-muted mb-0">{{ product.price }}원</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <!-- End -->
+        </div>
+      </div>
+  </div>
+  <!-- heart like button -->
+  <script>
+    var heartDOMs = document.getElementsByClassName('js-heart');
+
+    function doLikeButton(e){
+      toggleButton(e.target);
+    }
+
+    function toggleButton(button){
+      button.classList.toggle('liked')
+      
+      if(button.classList.contains("liked")){
+        button.classList.add('redy','fas', 'pulse');
+        button.classList.remove('far');
+        
+      }else{
+        button.classList.remove('redy','fas','pulse')
+        button.classList.add('far')
+      }
+    }
+    
+    for (var i=0; i < heartDOMs.length; i++){
+      heartDOMs[i].addEventListener("click", doLikeButton);
+    }
+ 
+  </script>
+  <script>
+    $('.likin').click(function(){
+    $.ajax({
+             type: "POST",
+             url: "{% url 'like_button' %}",
+             data: {'product_id': $(this).attr('name'),'operation':'like_submit','csrfmiddlewaretoken': '{{ csrf_token }}'},
+             dataType: "json",
+             success: function(response) {
+              selector = document.getElementsByName(response.product_id);
+                    if(response.liked==true){
+                      $(selector).css("color","blue");
+                    }
+                    else if(response.liked==false){
+                      $(selector).css("color","black");
+                    }
+
+
+              }
+
+        });
+
+  })
+  </script>
+{% endblock %}
+
